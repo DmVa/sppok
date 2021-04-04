@@ -1,0 +1,15 @@
+.topic{
+  
+  font-size: 16px;
+  border-color:aquamarine;
+  border-style:outset;
+  border-width:2px;
+  border:thin;
+  
+}
+.wide-input {
+  width: 100%;
+  font-size:20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

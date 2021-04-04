@@ -1,0 +1,51 @@
+<div class="row voting">
+  <div class="w-25 vote-block">
+    Not Voted
+    <ng-template [ngIf]="state">
+      <div *ngFor="let user of state.users; let index=index; let odd=odd; let even=even;">
+        <div *ngIf="!user.vote" [@itemAddRemove]>
+          {{user.name}}
+        </div>
+      </div>
+    </ng-template>
+</div>
+  <div class="w-25 vote-block">
+    Voted
+    <ng-template [ngIf]="state">
+      <div *ngFor="let user of state.users; let index=index; let odd=odd; let even=even;">
+        <div *ngIf="user.vote" [@itemAddRemove] class="row votedcontainer">
+          <div cla>
+            <img src="../../assets/rp2cm.png" width="30" height="30" />
+          </div>
+          <div>
+            {{user.name}} : 
+          </div>
+          <div *ngIf="!state.isvoting" class="votenumber">
+            <b>
+              {{user.vote}}
+            </b>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="w-50 vote-block">
+    <div>
+      {{explation}}
+    </div>
+    <div>
+      <label>
+        Your Vote
+        <input id="vote" type="text" maxlength="10" size="5" title="Use numbers (0,1,2,3,5) or sizes (S,M,L,XL). Send empty for clear vote." [(ngModel)]="yourVote"/>
+      </label>
+      <button class="btn btn-primary m-1 btn-sm"  (click)="sendVote()" title="Send you vote to others">Send Vote</button>
+    </div>
+    <div class="m-1 votebtn">
+      <button class="btn btn-secondary px-2 btn-block" [disabled]="state.isvoting" (click)="startVote()" title="Click for start voting">Start Voting</button>
+    <!--</div>
+    <div class="m-1 votebtn">-->
+      <button class="btn btn-secondary px-2 btn-block" [disabled]="!state.isvoting" (click)="endVote()" title="Finish vote and show results">End Voting</button>
+    </div>
+  
+  </div>
+</div>
