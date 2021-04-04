@@ -36,7 +36,6 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\services\notificationService\hubnotification.service.ts" />
     <None Remove="ClientApp\src\app\services\notificationService\notification.service.ts" />
-    <None Remove="ClientApp\src\app\services\notificationService\notificationtype.ts" />
     <None Remove="ClientApp\src\app\sharedModels\roomState.ts" />
     <None Remove="ClientApp\src\app\sharedModels\userModel.ts" />
     <None Remove="ClientApp\src\app\services\appService\app.service.ts" />
@@ -67,9 +66,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Update="ClientApp\src\app\services\notificationService\notificationtype.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\sharedModels\roomState.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

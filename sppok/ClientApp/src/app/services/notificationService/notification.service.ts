@@ -3,30 +3,30 @@ import { Injectable } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, Observable, Observer } from "rxjs";
 import { SignalRService } from "../signalrService/signalr.service";
-import { NotificationType } from "./notificationtype";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  constructor(private toastr: ToastrService) {
+  constructor(public  toastr: ToastrService) {
   }
 
-  public notify(message: string, title: string, type: NotificationType) {
+  public notify(message: string, title: string, type: InfoMessageType) {
     switch (type) {
-      case NotificationType.Error: {
+      case InfoMessageType.Error: {
         this.toastr.error(message, title, { timeOut: 5000 });
         break;
       }
-      case NotificationType.Info: {
+      case InfoMessageType.Info: {
         this.toastr.info(message, title, { timeOut: 2000 });
         break;
       }
-      case NotificationType.Success: {
+      case InfoMessageType.Success: {
         this.toastr.success(message, title, { timeOut: 2000 });
         break;
       }
-      case NotificationType.Warning: {
+      case InfoMessageType.Warning: {
         this.toastr.warning(message, title, { timeOut: 4000 });
         break;
       }
@@ -38,4 +38,11 @@ export class NotificationService {
 
     console.log(title + ':' + message);
   }
+}
+
+export enum InfoMessageType {
+  Info,
+  Success,
+  Warning,
+  Error
 }

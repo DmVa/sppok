@@ -5,8 +5,8 @@ import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
 import { HubNotificationService } from '../services/notificationService/hubnotification.service';
-import { NotificationService } from '../services/notificationService/notification.service';
-import { NotificationType } from '../services/notificationService/notificationType';
+import { InfoMessageType, NotificationService } from '../services/notificationService/notification.service';
+
 import { SignalRService } from '../services/signalrService/signalr.service';
 import { RoomState } from '../sharedModels/roomState';
 import { UserModel } from '../sharedModels/userModel';
@@ -46,6 +46,7 @@ export class VotingComponent  {
     this.signlalRService.voteStarted$.subscribe(value => {
       that.state.isvoting = true;
       that.state.users.forEach(x => { x.vote = '' });
+      that.yourVote = '';
       that.updateExplanation();
     });
 
@@ -101,7 +102,7 @@ export class VotingComponent  {
 
   public sendVote() {
     if (this.yourVote && this.yourVote.length > 9) {
-      this.notificationService.notify("It's a serious vote. Choose value better.", "Vote", NotificationType.Error);
+      this.notificationService.notify("It's a serious vote. Choose value better.", "Vote", InfoMessageType.Error);
       return;
     }
 

@@ -23,6 +23,9 @@ namespace sppok.Hubs
         {
             await base.OnConnectedAsync();
         }
+        public void Ping()
+        {
+        }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {

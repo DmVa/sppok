@@ -35,6 +35,7 @@ import { VotingComponent } from './voting/voting.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'vote', component: HomeComponent, pathMatch: 'full' },
     ], { relativeLinkResolution: 'legacy' }),
     NgbModule,
     BrowserAnimationsModule,

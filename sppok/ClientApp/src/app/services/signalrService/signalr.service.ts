@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import * as signalR from "@aspnet/signalr";
 import { BehaviorSubject, Observable, Observer, Subject } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { UserModel } from "../../sharedModels/userModel";
 import { AppService } from "../appService/app.service";
-import { NotificationType } from "../notificationService/notificationType";
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class SignalRService {
   private _syserrorsSubject: Subject<string>;
   private _connectionRegisteredSubject: Subject<string>;
   private _connected: Boolean = false;
+  private apiURL = '';
 
   public connectionRegistered$: Observable<string>;
   public syserrors$: Observable<string>;
@@ -25,22 +26,35 @@ export class SignalRService {
   public userLeft$: Observable<{ userName: string, connectionId: string }>;
   
 
-  constructor(private appSerice: AppService) {
+  constructor(
+    @Inject('BASE_URL') baseUrl: string,
+    private appSerice: AppService) {
     this._syserrorsSubject = new Subject<string>();
     this.syserrors$ = this._syserrorsSubject.asObservable();
-
+    this.apiURL = baseUrl + "app";
     this._connectionRegisteredSubject = new Subject<string>();
     this.connectionRegistered$ = this._connectionRegisteredSubject.asObservable();
+    this.buildConnection();
+   
+  }
 
+  private buildConnection() {
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(environment.baseSignalUrl)
+      .withUrl(this.apiURL)
       .build();
 
-    this._hubConnection.onclose((error) => {
-      this._connected = false;
-    });
+      this._hubConnection.onclose((error) => {
+        this._connected = false;
+        
+        console.log("hub connection closed");
+        this._syserrorsSubject.next("Conection Lost. Refresh the page.")
+      });
 
-    this.addListeners();
+      this.addListeners();
+  }
+
+  private startPing() {
+    setTimeout(() => { this._hubConnection.invoke('ping'); }, 30000);
   }
 
   public startConnection = () => {
@@ -49,6 +63,8 @@ export class SignalRService {
         .start()
         .then(() => {
           this.registerConnectionId(); this._connected = true;
+          this.startPing();
+
         })
         .catch(err => {
           this._syserrorsSubject.next('Error while starting connection: ' + err)

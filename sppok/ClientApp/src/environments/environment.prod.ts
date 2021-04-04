@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseSignalUrl: '/app',
-  baseApiUrl: '/api'
+  baseSignalUrl: '/vote/app',
+  baseApiUrl: '/vote/api'
 };

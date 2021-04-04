@@ -5,7 +5,7 @@ import { ApiService } from '../services/apiService/api.service';
 import { AppService } from '../services/appService/app.service';
 import { HubNotificationService } from '../services/notificationService/hubnotification.service';
 import { NotificationService } from '../services/notificationService/notification.service';
-import { NotificationType } from '../services/notificationService/notificationType';
+
 import { SignalRService } from '../services/signalrService/signalr.service';
 
 @Component({

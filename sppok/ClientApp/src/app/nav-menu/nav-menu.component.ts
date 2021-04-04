@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../login/login.component';
 import { AppService } from '../services/appService/app.service';
@@ -10,7 +10,10 @@ import { AppService } from '../services/appService/app.service';
 })
 export class NavMenuComponent implements OnInit  {
   isExpanded = false;
-  constructor(private modalService: NgbModal, private appService: AppService) { }
+  constructor(
+    private modalService: NgbModal,
+    private appService: AppService) {
+  }
   collapse() {
     this.isExpanded = false;
   }

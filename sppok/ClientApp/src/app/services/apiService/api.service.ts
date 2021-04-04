@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
@@ -10,10 +10,13 @@ import { RoomState } from '../../sharedModels/roomState';
 })
 
 export class ApiService {
- private apiURL = environment.baseApiUrl;
+  private apiURL = '';
 
-  constructor(private http: HttpClient
-  ) { }
+  constructor(@Inject('BASE_URL') baseUrl: string,
+    private http: HttpClient,
+  ) {
+  this.apiURL = baseUrl + "api";
+}
 
   // Http Options
   httpOptions = {
