@@ -41,7 +41,7 @@
       <button class="btn btn-primary m-1 btn-sm"  (click)="sendVote()" title="Send you vote to others">Send Vote</button>
     </div>
     <div class="m-1 votebtn">
-      <button class="btn btn-secondary px-2 btn-block" [disabled]="state.isvoting" (click)="startVote()" title="Click for start voting">Start Voting</button>
+      <button class="btn btn-secondary px-2 btn-block" [disabled]="state.isvoting" (click)="startVote()" title="Click for start voting, previous results will be deleted.">Start Voting</button>
     <!--</div>
     <div class="m-1 votebtn">-->
       <button class="btn btn-secondary px-2 btn-block" [disabled]="!state.isvoting" (click)="endVote()" title="Finish vote and show results">End Voting</button>

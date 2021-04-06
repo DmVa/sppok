@@ -5,9 +5,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = void 0;
 exports.environment = {
-    production: false,
-    baseSignalUrl: 'https://localhost:5001/app',
-    baseApiUrl: 'https://localhost:5001/api'
+    production: false
 };
 /*
  * In development mode, to ignore zone related error stack frames such as

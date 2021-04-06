@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '../../environments/environment';
 import { LoginComponent } from '../login/login.component';
 import { AppService } from '../services/appService/app.service';
+import { SignalRService } from '../services/signalrService/signalr.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -10,9 +12,14 @@ import { AppService } from '../services/appService/app.service';
 })
 export class NavMenuComponent implements OnInit  {
   isExpanded = false;
+  isProduction = false;
   constructor(
     private modalService: NgbModal,
-    private appService: AppService) {
+    private appService: AppService,
+    private signalR: SignalRService
+  ) {
+    this.isProduction = environment.production;
+
   }
   collapse() {
     this.isExpanded = false;
@@ -33,5 +40,9 @@ export class NavMenuComponent implements OnInit  {
     modalRef.result
       .then()
       .catch();
+  }
+
+  disconnect() {
+    this.signalR.stop();
   }
 }

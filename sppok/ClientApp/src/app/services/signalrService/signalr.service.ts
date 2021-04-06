@@ -42,19 +42,16 @@ export class SignalRService {
     this._hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.apiURL)
       .build();
-
+    
       this._hubConnection.onclose((error) => {
         this._connected = false;
         
         console.log("hub connection closed");
-        this._syserrorsSubject.next("Conection Lost. Refresh the page.")
+        this._syserrorsSubject.next("Conection Lost. Page will be refreshed. Close tab in case of infinity refresh.")
+        setTimeout(() => { window.location.reload(); }, 3000);
       });
 
       this.addListeners();
-  }
-
-  private startPing() {
-    setTimeout(() => { this._hubConnection.invoke('ping'); }, 30000);
   }
 
   public startConnection = () => {
@@ -62,9 +59,8 @@ export class SignalRService {
       this._hubConnection
         .start()
         .then(() => {
-          this.registerConnectionId(); this._connected = true;
-          this.startPing();
-
+          this.registerConnectionId();
+          this._connected = true;
         })
         .catch(err => {
           this._syserrorsSubject.next('Error while starting connection: ' + err)
@@ -84,12 +80,12 @@ export class SignalRService {
     this.addVoteFinishedListener();
     this.addUserVotedListener();
   }
-  
-  private stop(): void{
+
+  public stop(): void{
     this._hubConnection
       .stop()
       .then(value => {
-        console.log('connection droppped ok');
+        console.log('Connection stopped ')
       })
       .catch(err => this._syserrorsSubject.next('Error while stopping connection: ' + err))
   }
@@ -151,27 +147,33 @@ export class SignalRService {
 
   // push methods
   public raiseTopicChanged = (topic: string) => {
-    this._hubConnection.invoke('topicchanged', topic);
+    this._hubConnection.invoke('topicchanged', topic)
+      .catch(err => this._syserrorsSubject.next(err));;
   }
 
   public voted = (vote: string) => {
-    this._hubConnection.invoke('voted', vote);
+    this._hubConnection.invoke('voted', vote)
+      .catch(err => this._syserrorsSubject.next(err));
   }
 
   public startVote = () => {
-    this._hubConnection.invoke('votestrated');
+    this._hubConnection.invoke('votestrated')
+      .catch(err => this._syserrorsSubject.next(err));
   }
 
   public endVote = () => {
-    this._hubConnection.invoke('votefinished');
+    this._hubConnection.invoke('votefinished')
+      .catch(err => this._syserrorsSubject.next(err));
   }
 
   private registerConnectionId = () => {
     this._hubConnection.invoke('registerconnectionid', this.appSerice.current().userName).then(
       (data) => {
         this.appSerice.setConnectionId(data);
+        this._connected = true;
         this._connectionRegisteredSubject.next(data);
       }
-    );
+    )
+    .catch(err => this._syserrorsSubject.next(err));;
   }
 }

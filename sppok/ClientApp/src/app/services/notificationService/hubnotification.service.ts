@@ -20,7 +20,7 @@ export class HubNotificationService {
     });
 
     this.signlalRService.topicChanged$.subscribe((value) => {
-      let message = 'Changed topic to:' + value.topic.substr(0, 30);
+      let message = 'New topic: ' + value.topic.substr(0, 30);
       if (value.topic.length > 30) {
         message = message + '...';
       } 
