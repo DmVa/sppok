@@ -30,7 +30,7 @@ import { UserModel } from '../sharedModels/userModel';
 export class VotingComponent  {
   explation: string = 'Loading...';
   private self = this;
-  public state: RoomState = { isvoting: false, topic: '', users:[] }
+  public state: RoomState = { isVoting: false, topic: '', users:[] }
   public yourVote: string = '';
 
   constructor(
@@ -44,14 +44,14 @@ export class VotingComponent  {
     let that = this;
     this.signlalRService.connectionRegistered$.subscribe((connectionId) => that.onConnectionRegistered(connectionId));
     this.signlalRService.voteStarted$.subscribe(value => {
-      that.state.isvoting = true;
+      that.state.isVoting = true;
       that.state.users.forEach(x => { x.vote = '' });
       that.yourVote = '';
       that.updateExplanation();
     });
 
     this.signlalRService.voteFinished$.subscribe(value => {
-      that.state.isvoting = false;
+      that.state.isVoting = false;
       that.updateExplanation();
     });
 
@@ -118,7 +118,7 @@ export class VotingComponent  {
   }
 
   public updateExplanation() {
-    if (!this.state.isvoting) {
+    if (!this.state.isVoting) {
       this.explation = 'Voting is not started.'
     } else {
       if (this.yourVote && this.yourVote.length > 0) {
