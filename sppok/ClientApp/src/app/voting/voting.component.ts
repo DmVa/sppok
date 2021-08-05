@@ -87,7 +87,7 @@ export class VotingComponent  {
   }
 
   private onConnectionRegistered(connectionId: string) {
-    this.apiService.getState().subscribe(room => {
+    this.apiService.roomState$.subscribe(room => {
       this.state = room;
 
       let user = this.state.users.find(x => x.connectionId == this.appService.current().connectionId)
@@ -98,6 +98,8 @@ export class VotingComponent  {
 
       this.updateExplanation();
     });
+
+    this.apiService.getState();
   }
 
   public sendVote() {
@@ -122,9 +124,9 @@ export class VotingComponent  {
       this.explation = 'Voting is not started.'
     } else {
       if (this.yourVote && this.yourVote.length > 0) {
-        this.explation = 'Voting in progress. You voted.'
+        this.explation = 'Voting is in progress. You voted.'
       } else {
-        this.explation = 'Voting in progress. Please vote.'
+        this.explation = 'Voting is in progress. Please vote.'
       }
     }
   }
