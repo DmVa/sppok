@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/apiService/api.service';
 
@@ -27,8 +28,9 @@ import { UserModel } from '../sharedModels/userModel';
     ])
   ]
 })
-export class VotingComponent  {
+export class VotingComponent implements OnInit {
   explation: string = 'Loading...';
+  private _roomName: string = '';
   private self = this;
   public state: RoomState = { isVoting: false, topic: '', users:[] }
   public yourVote: string = '';
@@ -39,7 +41,8 @@ export class VotingComponent  {
     private signlalRService: SignalRService,
     private hubnotificationService: HubNotificationService,
     private notificationService: NotificationService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {
     let that = this;
     this.signlalRService.connectionRegistered$.subscribe((connectionId) => that.onConnectionRegistered(connectionId));
@@ -58,6 +61,10 @@ export class VotingComponent  {
     this.signlalRService.userJoined$.subscribe(value => { that.onUserJoined(value.userName, value.connectionId) })
     this.signlalRService.userLeft$.subscribe(value => { that.onUserLeft(value.userName, value.connectionId) })
     this.signlalRService.userVoted$.subscribe(value => { that.onUserVoted(value.vote, value.userName, value.connectionId) })
+  }
+
+  public ngOnInit() {
+    this._roomName = this.route.snapshot.params["name"];
   }
 
   private onUserLeft(userName: string, connectionId: string) {
@@ -99,11 +106,11 @@ export class VotingComponent  {
       this.updateExplanation();
     });
 
-    this.apiService.getState();
+    this.apiService.getState(this._roomName);
   }
 
   public sendVote() {
-    if (this.yourVote && this.yourVote.length > 9) {
+    if (this.yourVote && this.yourVote.length > 10) {
       this.notificationService.notify("It's a serious vote. Choose value better.", "Vote", InfoMessageType.Error);
       return;
     }

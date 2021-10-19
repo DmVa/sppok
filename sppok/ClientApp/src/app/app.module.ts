@@ -8,6 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { RoomComponent } from './room/room.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
@@ -19,11 +20,19 @@ import { TopicComponent } from './topic/topic.component';
 import { ApiService } from './services/apiService/api.service';
 import { VotingComponent } from './voting/voting.component';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './http-interceptors/auth-interceptor';
+
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+];
+
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    RoomComponent, 
     LoginComponent,
     TopicComponent,
     VotingComponent
@@ -34,8 +43,10 @@ import { VotingComponent } from './voting/voting.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: 'vote', component: HomeComponent, pathMatch: 'full' },
-      { path: '', redirectTo: 'vote', pathMatch: 'full' },
+      { path: 'room/:name', component: RoomComponent, pathMatch: 'prefix' },
+      { path: 'room', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '**', redirectTo: '/' }
     ], { relativeLinkResolution: 'legacy' }),
     NgbModule,
     BrowserAnimationsModule,
@@ -43,6 +54,7 @@ import { VotingComponent } from './voting/voting.component';
   ],
   providers: [
     AppService,
+    httpInterceptorProviders,
     SignalRService,
     NotificationService,
     HubNotificationService,

@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../environments/environment';
 import { LoginComponent } from '../login/login.component';
@@ -16,7 +17,8 @@ export class NavMenuComponent implements OnInit  {
   constructor(
     private modalService: NgbModal,
     private appService: AppService,
-    private signalR: SignalRService
+    private signalR: SignalRService,
+    private router: Router,
   ) {
     this.isProduction = environment.production;
 
@@ -36,13 +38,12 @@ export class NavMenuComponent implements OnInit  {
   }
 
   openLogin() {
-    const modalRef = this.modalService.open(LoginComponent);
-    modalRef.result
-      .then()
-      .catch();
+    this.appService.openLogin().then( r => { });
   }
 
   disconnect() {
     this.signalR.stop();
+    this.appService.disconnect();
+    this.router.navigate(['/']);
   }
 }

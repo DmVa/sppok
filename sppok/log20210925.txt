@@ -1,0 +1,102 @@
+2021-09-25 22:05:02.066 +03:00 [INF] User profile is available. Using 'C:\Users\dmva\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-09-25 22:05:02.231 +03:00 [INF] Starting @angular/cli on port 56965...
+2021-09-25 22:05:02.320 +03:00 [INF] Now listening on: https://localhost:5001
+2021-09-25 22:05:02.320 +03:00 [INF] Now listening on: http://localhost:5000
+2021-09-25 22:05:02.322 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-09-25 22:05:02.322 +03:00 [INF] Hosting environment: Development
+2021-09-25 22:05:02.322 +03:00 [INF] Content root path: d:\Projects\sppok\sppok
+2021-09-25 22:05:02.805 +03:00 [INF] > sppok@0.0.0 start d:\Projects\sppok\sppok\ClientApp
+
+2021-09-25 22:05:02.805 +03:00 [INF] > ng serve "--port" "56965"
+
+2021-09-25 22:05:05.843 +03:00 [ERR] Option "extractCss" is deprecated: Deprecated since version 11.0. No longer required to disable CSS extraction for HMR.
+
+2021-09-25 22:05:06.027 +03:00 [ERR]     'node-sass' usage is deprecated and will be removed in a future major version. To opt-out of the deprecated behaviour and start using 'sass' uninstall 'node-sass'.
+
+2021-09-25 22:05:13.799 +03:00 [INF] Initial Chunk Files   | Names         |      Size
+
+2021-09-25 22:05:13.799 +03:00 [INF] vendor.js             | vendor        |   5.50 MB
+
+2021-09-25 22:05:13.799 +03:00 [INF] polyfills.js          | polyfills     | 585.32 kB
+
+2021-09-25 22:05:13.799 +03:00 [INF] styles.css, styles.js | styles        | 498.58 kB
+
+2021-09-25 22:05:13.799 +03:00 [INF] main.js               | main          |  73.19 kB
+
+2021-09-25 22:05:13.799 +03:00 [INF] runtime.js            | runtime       |   6.15 kB
+
+2021-09-25 22:05:13.799 +03:00 [INF] | Initial Total |   6.63 MB
+
+2021-09-25 22:05:13.799 +03:00 [INF] Build at: 2021-09-25T19:05:13.798Z - Hash: aeb31344df8883a4d95a - Time: 7565ms
+
+2021-09-25 22:05:13.799 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/test.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:05:13.800 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:05:13.800 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/app/app.server.module.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:05:13.800 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:05:13.800 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/environments/environment.prod.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:05:13.800 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:05:13.800 +03:00 [INF] ** Angular Live Development Server is listening on localhost:56965, open your browser on http://localhost:56965/ **
+
+2021-09-25 22:05:13.842 +03:00 [INF] тИЪ Compiled successfully.
+
+2021-09-25 22:09:35.080 +03:00 [INF] User profile is available. Using 'C:\Users\dmva\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-09-25 22:09:35.218 +03:00 [INF] Starting @angular/cli on port 56996...
+2021-09-25 22:09:35.309 +03:00 [INF] Now listening on: https://localhost:5001
+2021-09-25 22:09:35.309 +03:00 [INF] Now listening on: http://localhost:5000
+2021-09-25 22:09:35.311 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-09-25 22:09:35.311 +03:00 [INF] Hosting environment: Development
+2021-09-25 22:09:35.311 +03:00 [INF] Content root path: d:\Projects\sppok\sppok
+2021-09-25 22:09:35.869 +03:00 [INF] > sppok@0.0.0 start d:\Projects\sppok\sppok\ClientApp
+
+2021-09-25 22:09:35.869 +03:00 [INF] > ng serve "--port" "56996"
+
+2021-09-25 22:09:38.539 +03:00 [ERR] Option "extractCss" is deprecated: Deprecated since version 11.0. No longer required to disable CSS extraction for HMR.
+
+2021-09-25 22:09:38.723 +03:00 [ERR]     'node-sass' usage is deprecated and will be removed in a future major version. To opt-out of the deprecated behaviour and start using 'sass' uninstall 'node-sass'.
+
+2021-09-25 22:09:46.679 +03:00 [INF] Initial Chunk Files   | Names         |      Size
+
+2021-09-25 22:09:46.679 +03:00 [INF] vendor.js             | vendor        |   5.50 MB
+
+2021-09-25 22:09:46.679 +03:00 [INF] polyfills.js          | polyfills     | 585.32 kB
+
+2021-09-25 22:09:46.679 +03:00 [INF] styles.css, styles.js | styles        | 498.58 kB
+
+2021-09-25 22:09:46.679 +03:00 [INF] main.js               | main          |  73.19 kB
+
+2021-09-25 22:09:46.679 +03:00 [INF] runtime.js            | runtime       |   6.15 kB
+
+2021-09-25 22:09:46.679 +03:00 [INF] | Initial Total |   6.63 MB
+
+2021-09-25 22:09:46.679 +03:00 [INF] Build at: 2021-09-25T19:09:46.678Z - Hash: aeb31344df8883a4d95a - Time: 7750ms
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/test.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/app/app.server.module.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Warning: d:/Projects/sppok/sppok/ClientApp/src/environments/environment.prod.ts is part of the TypeScript compilation but it's unused.
+
+2021-09-25 22:09:46.679 +03:00 [ERR] Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+2021-09-25 22:09:46.680 +03:00 [INF] ** Angular Live Development Server is listening on localhost:56996, open your browser on http://localhost:56996/ **
+
+2021-09-25 22:09:46.723 +03:00 [INF] тИЪ Compiled successfully.
+
+2021-09-25 22:09:52.021 +03:00 [INF] Request starting HTTP/1.1 POST https://localhost:5001/api/auth/login application/json 42
+2021-09-25 22:09:52.067 +03:00 [INF] Executing endpoint 'sppok.Controllers.AuthController.Login (sppok)'
+2021-09-25 22:09:52.089 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.String Login(sppok.Model.LoginModel) on controller sppok.Controllers.AuthController (sppok).
+2021-09-25 22:09:52.181 +03:00 [INF] created token for 1
+2021-09-25 22:09:52.185 +03:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2021-09-25 22:09:52.190 +03:00 [INF] Executed action sppok.Controllers.AuthController.Login (sppok) in 97.998ms
+2021-09-25 22:09:52.191 +03:00 [INF] Executed endpoint 'sppok.Controllers.AuthController.Login (sppok)'
+2021-09-25 22:09:52.191 +03:00 [INF] Request finished HTTP/1.1 POST https://localhost:5001/api/auth/login application/json 42 - 200 - text/plain;+charset=utf-8 172.8786ms

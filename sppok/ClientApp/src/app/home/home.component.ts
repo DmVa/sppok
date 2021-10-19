@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
 import { HubNotificationService } from '../services/notificationService/hubnotification.service';
-import { NotificationService } from '../services/notificationService/notification.service';
+import { InfoMessageType, NotificationService } from '../services/notificationService/notification.service';
 
 import { SignalRService } from '../services/signalrService/signalr.service';
 
@@ -15,25 +16,43 @@ import { SignalRService } from '../services/signalrService/signalr.service';
 })
 export class HomeComponent implements OnInit {
   userName: string = '';
-  private that = this;
+  roomName: string = '';
   constructor(private modalService: NgbModal,
     public appService: AppService,
     private apiService: ApiService,
     private signlalRService: SignalRService,
-    private hubnotificationService: HubNotificationService,
-    private notificationService: NotificationService
+  
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.appService.appState$.subscribe(state => { this.userName = state.userName });
 
-    this.hubnotificationService.init();
+  
   }
 
   public ngOnInit() {
-    let state = this.appService.current();
-    if (state.userName && !state.connectionId) {
-      this.signlalRService.startConnection();
-    }
+   
   }
 
- 
+  joinroom() {
+    if (!this.roomName) {
+      this.notificationService.notify("Room name is required", "Required", InfoMessageType.Warning);
+      return;
+    }
+
+    if (!this.userName) {
+      this.appService.openLogin().then(result => {
+        if (result) {
+          this.navigateRoom();
+        }
+      })
+      return;
+    }
+    this.navigateRoom();
+  }
+
+  private navigateRoom() {
+    this.router.navigate(['room/' + this.roomName], { relativeTo: this.route });
+  }
 }

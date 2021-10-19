@@ -3,25 +3,22 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
-      <img src="assets/rp2cm.png" />
-      <a class="navbar-brand" [routerLink]="['/']">RP Voting Room</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
+      <a class="navbar-brand" [routerLink]="['/']" title="Leave room">
+        <img id="logo" src="assets/vote-numb.jpg" alt="online voting home page" />
+      </a>
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded"
+              (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
+      <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
+           [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
-          <li *ngIf="!isProduction" class="nav-item"
+          <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="" title="Disconnect" (click)="disconnect()">Disconnect</a>
@@ -32,8 +29,10 @@
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="" title="Change your name" (click)="openLogin()">Login</a>
           </li>
-
         </ul>
+        <a href="mailto:dvasylenko@gmail.com?subject=Online voting">
+          Mail to support
+        </a>
       </div>
     </div>
   </nav>

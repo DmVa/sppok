@@ -12,6 +12,10 @@ export class NotificationService {
   constructor(public  toastr: ToastrService) {
   }
 
+  public permamentError(message: string) {
+    this.toastr.error(message, "Error", { timeOut: 0 });
+  }
+
   public notify(message: string, title: string, type: InfoMessageType) {
     switch (type) {
       case InfoMessageType.Error: {

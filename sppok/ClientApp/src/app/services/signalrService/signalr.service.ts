@@ -12,12 +12,17 @@ import { AppService } from "../appService/app.service";
 export class SignalRService {
   private _hubConnection: signalR.HubConnection;
   private _syserrorsSubject: Subject<string>;
+  private _criticalErrorsSubject: Subject<string>;
+
   private _connectionRegisteredSubject: Subject<string>;
   private _connected: Boolean = false;
   private apiURL = '';
-
+  private _roomName = '';
+  private _expectedStop = false;
   public connectionRegistered$: Observable<string>;
   public syserrors$: Observable<string>;
+  public criticalErrors$: Observable<string>;
+
   public topicChanged$: Observable<{ topic: string, userName: string }>;
   public userVoted$: Observable<{ vote: string, userName: string, connectionId: string }>;
   public voteStarted$: Observable<{ userName: string }>;
@@ -31,30 +36,34 @@ export class SignalRService {
     private appSerice: AppService) {
     this._syserrorsSubject = new Subject<string>();
     this.syserrors$ = this._syserrorsSubject.asObservable();
+    this._criticalErrorsSubject = new Subject<string>();
+    this.criticalErrors$ = this._criticalErrorsSubject.asObservable();
     this.apiURL = baseUrl + "app";
     this._connectionRegisteredSubject = new Subject<string>();
     this.connectionRegistered$ = this._connectionRegisteredSubject.asObservable();
     this.buildConnection();
-   
   }
 
   private buildConnection() {
     this._hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.apiURL)
+      .withUrl(this.apiURL, { accessTokenFactory: () => this.appSerice.token})
       .build();
     
       this._hubConnection.onclose((error) => {
         this._connected = false;
         
         console.log("hub connection closed");
-        this._syserrorsSubject.next("Conection Lost. Page will be refreshed. Close tab in case of infinity refresh.")
-        setTimeout(() => { window.location.reload(); }, 3000);
+        if (!this._expectedStop) {
+          this._criticalErrorsSubject.next("Conection Lost. Please refresh the page to restore connection.");
+        }
       });
 
       this.addListeners();
   }
 
-  public startConnection = () => {
+  public startConnection = (roomName) => {
+    this._roomName = roomName;
+    this._expectedStop = false;
     if (!this._connected) {
       this._hubConnection
         .start()
@@ -81,9 +90,10 @@ export class SignalRService {
     this.addUserVotedListener();
   }
 
-  public stop(): void{
+  public stop(): void {
     this._hubConnection
-      .stop()
+    this._expectedStop = true;
+    this._hubConnection.stop()
       .then(value => {
         console.log('Connection stopped ')
       })
@@ -147,27 +157,27 @@ export class SignalRService {
 
   // push methods
   public raiseTopicChanged = (topic: string) => {
-    this._hubConnection.invoke('topicchanged', topic)
+    this._hubConnection.invoke('topicchanged', this._roomName, topic)
       .catch(err => this._syserrorsSubject.next(err));;
   }
 
   public voted = (vote: string) => {
-    this._hubConnection.invoke('voted', vote)
+    this._hubConnection.invoke('voted', this._roomName, vote)
       .catch(err => this._syserrorsSubject.next(err));
   }
 
   public startVote = () => {
-    this._hubConnection.invoke('votestrated')
+    this._hubConnection.invoke('votestrated', this._roomName)
       .catch(err => this._syserrorsSubject.next(err));
   }
 
   public endVote = () => {
-    this._hubConnection.invoke('votefinished')
+    this._hubConnection.invoke('votefinished', this._roomName)
       .catch(err => this._syserrorsSubject.next(err));
   }
 
   private registerConnectionId = () => {
-    this._hubConnection.invoke('registerconnectionid', this.appSerice.current().userName).then(
+    this._hubConnection.invoke('registerconnectionid', this._roomName).then(
       (data) => {
         this.appSerice.setConnectionId(data);
         this._connected = true;

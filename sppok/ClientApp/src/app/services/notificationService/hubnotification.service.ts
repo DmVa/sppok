@@ -9,14 +9,20 @@ import { InfoMessageType, NotificationService } from "./notification.service";
   providedIn: 'root'
 })
 export class HubNotificationService {
+
   constructor(
     private notificationService: NotificationService,
     private signlalRService: SignalRService) {
+    this.init();
   }
 
-  public init() {
+  private init() {
     this.signlalRService.syserrors$.subscribe(value => {
       this.notificationService.notify(value, 'Error', InfoMessageType.Error);
+    });
+
+    this.signlalRService.criticalErrors$.subscribe(value => {
+      this.notificationService.permamentError(value);
     });
 
     this.signlalRService.topicChanged$.subscribe((value) => {

@@ -1,7 +1,15 @@
-<div class="row hello">
-  <div>Hello</div>
-  <div><b>{{userName}}</b></div>
-  <div>here we are discussing:</div>
-</div>
-<topic-home></topic-home>
-<voting></voting>
+<div class="hello">
+  <div class="row">
+    <div>Hello</div>
+    <div>&nbsp;<b>{{userName}}</b></div>
+  </div>
+  <div class="row">
+    <div>Type room name and click button to join the room to participate in online voting</div>
+   </div>
+    <div class="row">
+      <div>
+        <input type="text" class="room-name" [(ngModel)]="roomName" />
+      </div>
+      <button type="button" class="btn btn-info" (click)="joinroom()" title="Change discussion topic for all particitiants">Join room</button>
+    </div>
+  </div> 

@@ -3,8 +3,13 @@
     Not Voted
     <ng-template [ngIf]="state">
       <div *ngFor="let user of state.users; let index=index; let odd=odd; let even=even;">
-        <div *ngIf="!user.vote" [@itemAddRemove]>
-          {{user.name}}
+        <div *ngIf="!user.vote" [@itemAddRemove] class="row votedcontainer">
+          <div>
+            <img src="assets/icon-thinking-4.png" width="30" height="30" />
+          </div>
+          <div>
+            {{user.name}}
+          </div>
         </div>
       </div>
     </ng-template>
@@ -15,7 +20,8 @@
       <div *ngFor="let user of state.users; let index=index; let odd=odd; let even=even;">
         <div *ngIf="user.vote" [@itemAddRemove] class="row votedcontainer">
           <div cla>
-            <img src="assets/rp2cm.png" width="30" height="30" />
+            <img *ngIf="!state.isVoting" src="assets/icon-happy-smile.png" width="30" height="30" />
+            <img *ngIf="state.isVoting" src="assets/icon-winky-smile.png" width="30" height="30" />
           </div>
           <div>
             {{user.name}} : 

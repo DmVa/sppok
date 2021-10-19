@@ -12,6 +12,11 @@ import { RoomState } from '../../sharedModels/roomState';
 export class ApiService {
   private apiURL = '';
   public roomState$: Subject<RoomState>;
+  private contentJsonOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+  };
 
   constructor(@Inject('BASE_URL') baseUrl: string,
     private http: HttpClient,
@@ -28,13 +33,17 @@ export class ApiService {
   }
   
   // HttpClient API get() method => Fetch employees list
-  getState() {
+  getState(roomName: string) {
     let that = this;
-    this.http.get<RoomState>(this.apiURL + '/state/getstate')
+    this.http.get<RoomState>(this.apiURL + '/state/getstate?roomName='+roomName)
       .subscribe(response => {
         that.roomState$.next(response),
           er => that.handleError(er)
       })
+  }
+
+  getToken(username): Observable<string> {
+    return this.http.post(this.apiURL + '/auth/login', { login: username, password: '' }, {responseType: 'text'})
   }
 
   // Error handling 

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using sppok.Model;
 using sppok.Services;
 using System;
@@ -8,17 +10,23 @@ using System.Threading.Tasks;
 
 namespace sppok.Hubs
 {
+    [Authorize]
     public class AppHub : Hub
     {
-        private readonly static ConnectionMapping _connections = new ConnectionMapping();
-        public static List<UserModel> GetUsers()
+        private readonly ILogger<AppHub> _logger;
+        private readonly RoomService _roomService;
+
+        public AppHub(ILogger<AppHub> logger, RoomService roomService)
         {
-            return _connections.GetUsers();
+            _logger = logger;
+            _roomService = roomService;
         }
-        public string UserName()
+      
+        private string UserName()
         {
-            return _connections.GetUserName(Context.ConnectionId);
+            return Context.User.Identity.Name;
         }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
@@ -30,44 +38,59 @@ namespace sppok.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             var userName = UserName();
-            _connections.Remove(Context.ConnectionId);
-            await Clients.All.SendAsync("userleft", userName, Context.ConnectionId);
+            var rooms = _roomService.GetUserRoomNames(Context.ConnectionId);
+            foreach(var roomName in rooms)
+            {
+                _roomService.RemoveUser(roomName, Context.ConnectionId);
+                await Clients.Group(roomName).SendAsync("userjoined", userName, Context.ConnectionId);
+            }
+           
             await base.OnDisconnectedAsync(exception);
         }
         
-        public async Task<string> RegisterConnectionId(string userName)
+        public async Task<string> RegisterConnectionId(string roomName)
         {
-            _connections.Add(Context.ConnectionId, userName);
-            await Clients.All.SendAsync("userjoined", userName, Context.ConnectionId);
+            var userName = UserName();
+            _roomService.AddUser(roomName, Context.ConnectionId, userName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            await Clients.Group(roomName).SendAsync("userjoined", userName, Context.ConnectionId);
              return  Context.ConnectionId;
         }
 
-        public async Task TopicChanged(string topic)
+        public async Task TopicChanged(string roomName, string topic)
         {
-            RoomStateService.Current.Topic = topic;
-            await Clients.All.SendAsync("topicchanged", topic, UserName());
+            var room = _roomService.GetRoom(roomName);
+            if (room != null)
+                room.Topic = topic;
+            await Clients.Group(roomName).SendAsync("topicchanged", topic, UserName());
         }
 
-        public async Task VoteStrated()
+        public async Task VoteStrated(string roomName)
         {
-            RoomStateService.Current.IsVoting = true;
-            _connections.ClearVote();
-            await Clients.All.SendAsync("votestarted", UserName());
-        }
-
-        public async Task VoteFinished()
-        {
-            RoomStateService.Current.IsVoting = false;
-            await Clients.All.SendAsync("votefinished", UserName());
-        }
-        public async Task Voted(string vote)
-        {
-            var user = _connections.GetUser(Context.ConnectionId);
-            if (user != null)
+            var room = _roomService.GetRoom(roomName);
+            if (room != null)
             {
-                user.Vote = vote;
-                await Clients.All.SendAsync("voted", vote, UserName(), Context.ConnectionId);
+                room.ClearAllVotes();
+                room.IsVoting = true;
             }
+            await Clients.Group(roomName).SendAsync("votestarted", UserName());
+        }
+
+        public async Task VoteFinished(string roomName)
+        {
+            var room = _roomService.GetRoom(roomName);
+            if (room != null)
+                room.IsVoting = false;
+
+            await Clients.Group(roomName).SendAsync("votefinished", UserName());
+        }
+        public async Task Voted(string roomName, string vote)
+        {
+            var room = _roomService.GetRoom(roomName);
+            if (room != null)
+                room.SetVote(Context.ConnectionId, vote);
+
+            await Clients.Group(roomName).SendAsync("voted", vote, UserName(), Context.ConnectionId);
         }
     }
 }
