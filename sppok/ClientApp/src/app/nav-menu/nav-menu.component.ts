@@ -46,4 +46,9 @@ export class NavMenuComponent implements OnInit  {
     this.appService.disconnect();
     this.router.navigate(['/']);
   }
+
+  leaveRoom() {
+    this.signalR.stop();
+    this.router.navigate(['/']);
+  }
 }

@@ -27,8 +27,6 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.appService.appState$.subscribe(state => { this.userName = state.userName });
-
-  
   }
 
   public ngOnInit() {

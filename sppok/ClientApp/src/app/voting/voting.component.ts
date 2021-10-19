@@ -5,6 +5,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
+import { AppState } from '../services/appService/appState';
 import { HubNotificationService } from '../services/notificationService/hubnotification.service';
 import { InfoMessageType, NotificationService } from '../services/notificationService/notification.service';
 
@@ -61,7 +62,9 @@ export class VotingComponent implements OnInit {
     this.signlalRService.userJoined$.subscribe(value => { that.onUserJoined(value.userName, value.connectionId) })
     this.signlalRService.userLeft$.subscribe(value => { that.onUserLeft(value.userName, value.connectionId) })
     this.signlalRService.userVoted$.subscribe(value => { that.onUserVoted(value.vote, value.userName, value.connectionId) })
+    this.appService.appState$.subscribe(state => {  that.onAppStateChanged(state) });
   }
+   
 
   public ngOnInit() {
     this._roomName = this.route.snapshot.params["name"];
@@ -96,7 +99,6 @@ export class VotingComponent implements OnInit {
   private onConnectionRegistered(connectionId: string) {
     this.apiService.roomState$.subscribe(room => {
       this.state = room;
-
       let user = this.state.users.find(x => x.connectionId == this.appService.current().connectionId)
       if (user) {
         this.yourVote = user.vote;
@@ -107,6 +109,13 @@ export class VotingComponent implements OnInit {
     });
 
     this.apiService.getState(this._roomName);
+  }
+
+  onAppStateChanged(state: AppState) {
+    let user = this.state.users.find(x => x.connectionId == state.connectionId)
+    if (user) {
+      user.name = state.userName
+    }
   }
 
   public sendVote() {

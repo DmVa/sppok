@@ -42,7 +42,7 @@ namespace sppok.Hubs
             foreach(var roomName in rooms)
             {
                 _roomService.RemoveUser(roomName, Context.ConnectionId);
-                await Clients.Group(roomName).SendAsync("userjoined", userName, Context.ConnectionId);
+                await Clients.Group(roomName).SendAsync("userleft", userName, Context.ConnectionId);
             }
            
             await base.OnDisconnectedAsync(exception);
