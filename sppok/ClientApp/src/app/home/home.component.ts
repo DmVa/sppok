@@ -39,6 +39,11 @@ export class HomeComponent implements OnInit {
       return;
     }
 
+    if (this.roomName == "app") {
+      this.notificationService.notify("This room name is not allowed", "Not possible", InfoMessageType.Warning);
+      return;
+    }
+
     if (!this.userName) {
       this.appService.openLogin().then(result => {
         if (result) {

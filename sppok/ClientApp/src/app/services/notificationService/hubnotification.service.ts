@@ -26,6 +26,11 @@ export class HubNotificationService {
     });
 
     this.signlalRService.topicChanged$.subscribe((value) => {
+      if (!value || !value.topic) {
+        console.log("topic not defined");
+        return;
+      }
+
       let message = 'New topic: ' + value.topic.substr(0, 30);
       if (value.topic.length > 30) {
         message = message + '...';
