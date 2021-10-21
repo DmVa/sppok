@@ -14,3 +14,8 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+/* Add application styles & imports to this file! */
+#toast-container > div {
+  opacity: 1;
+}
