@@ -1,5 +1,5 @@
 import { Message } from "@angular/compiler/src/i18n/i18n_ast";
-import { Injectable } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, Observable, Observer } from "rxjs";
 import { SignalRService } from "../signalrService/signalr.service";
@@ -9,7 +9,8 @@ import { SignalRService } from "../signalrService/signalr.service";
   providedIn: 'root'
 })
 export class NotificationService {
-  constructor(public  toastr: ToastrService) {
+  constructor(public toastr: ToastrService,
+    private ngZone: NgZone  ) {
   }
 
   public permamentError(message: string) {
@@ -17,6 +18,9 @@ export class NotificationService {
   }
 
   public notify(message: string, title: string, type: InfoMessageType) {
+    if (!NgZone.isInAngularZone()) {
+      console.log("Not angular zone");
+    }
     switch (type) {
       case InfoMessageType.Error: {
         this.toastr.error(message, title, { timeOut: 5000 });

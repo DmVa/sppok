@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@angular/core";
+import { Inject, Injectable, NgZone } from "@angular/core";
 import * as signalR from "@aspnet/signalr";
 import { BehaviorSubject, Observable, Observer, Subject } from "rxjs";
 import { environment } from "../../../environments/environment";
@@ -33,7 +33,9 @@ export class SignalRService {
 
   constructor(
     @Inject('BASE_URL') baseUrl: string,
-    private appSerice: AppService) {
+    private appSerice: AppService,
+    private ngZone: NgZone)
+  {
     this._syserrorsSubject = new Subject<string>();
     this.syserrors$ = this._syserrorsSubject.asObservable();
     this._criticalErrorsSubject = new Subject<string>();
@@ -105,7 +107,7 @@ export class SignalRService {
     let that = this;
     this.userJoined$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('userjoined', (userName, connectionId) => {
-        subscriber.next({ userName: userName, connectionId: connectionId })
+        that.ngZone.run(() => subscriber.next({ userName: userName, connectionId: connectionId }));
       });
     })
   }
@@ -114,7 +116,7 @@ export class SignalRService {
     let that = this;
     this.userLeft$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('userleft', (userName, connectionId) => {
-        subscriber.next({ userName: userName, connectionId: connectionId })
+        that.ngZone.run(() => subscriber.next({ userName: userName, connectionId: connectionId }));
       });
     })
   }
@@ -123,7 +125,7 @@ export class SignalRService {
     let that = this;
     this.topicChanged$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('topicchanged', (topic, userName) => {
-        subscriber.next({ topic: topic, userName: userName})
+         that.ngZone.run(()=>subscriber.next({ topic: topic, userName: userName}))
       });
     })
   }
@@ -132,7 +134,7 @@ export class SignalRService {
     let that = this;
     this.voteStarted$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('votestarted', (userName) => {
-        subscriber.next({userName: userName })
+        that.ngZone.run(() => subscriber.next({ userName: userName }));
       });
     })
   }
@@ -141,7 +143,7 @@ export class SignalRService {
     let that = this;
     this.voteFinished$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('votefinished', (userName) => {
-        subscriber.next({ userName: userName })
+        that.ngZone.run(() => subscriber.next({ userName: userName }));
       });
     })
   }
@@ -150,7 +152,7 @@ export class SignalRService {
     let that = this;
     this.userVoted$ = new Observable(function subscribe(subscriber) {
       that._hubConnection.on('voted', (vote, userName, connectionId) => {
-        subscriber.next({ vote: vote, userName: userName, connectionId: connectionId })
+        that.ngZone.run(() => subscriber.next({ vote: vote, userName: userName, connectionId: connectionId }));
       });
     })
   }
@@ -181,7 +183,7 @@ export class SignalRService {
       (data) => {
         this.appSerice.setConnectionId(data);
         this._connected = true;
-        this._connectionRegisteredSubject.next(data);
+        this.ngZone.run(() => this._connectionRegisteredSubject.next(data));
       }
     )
     .catch(err => this._syserrorsSubject.next(err));;

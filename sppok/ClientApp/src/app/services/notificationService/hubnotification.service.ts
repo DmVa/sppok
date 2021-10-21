@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, Observable, Observer } from "rxjs";
 import { SignalRService } from "../signalrService/signalr.service";
@@ -11,6 +11,7 @@ import { InfoMessageType, NotificationService } from "./notification.service";
 export class HubNotificationService {
 
   constructor(
+    private ngZone: NgZone,
     private notificationService: NotificationService,
     private signlalRService: SignalRService) {
     this.init();
