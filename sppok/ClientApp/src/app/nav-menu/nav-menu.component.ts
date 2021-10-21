@@ -28,9 +28,7 @@ export class NavMenuComponent implements OnInit  {
   }
 
   public ngOnInit() {
-    if (!this.appService.current().userName) {
-      this.openLogin();
-    }
+   
   }
 
   toggle() {
@@ -38,7 +36,7 @@ export class NavMenuComponent implements OnInit  {
   }
 
   openLogin() {
-    this.appService.openLogin().then( r => { });
+    this.appService.openLogin();
   }
 
   disconnect() {

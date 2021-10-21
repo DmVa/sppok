@@ -60,7 +60,7 @@ export class AppService {
           }
           resolve(false)
         })
-        .catch(reject);
+        .catch((reason) => resolve(false));
     });
 
     return result;

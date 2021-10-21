@@ -29,6 +29,7 @@ namespace sppok.Controllers
         [Route("GetState")]
         public RoomState GetState(string roomName)
         {
+            roomName = roomName?.ToLower();
             var room = _roomService.GetRoom(roomName);
             if (room == null)
                 return new RoomState() { Users = new List<UserModel>() };

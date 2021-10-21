@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NotificationKind } from 'rxjs';
+import { NotificationKind, Subscription } from 'rxjs';
 import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
@@ -19,6 +19,7 @@ export class RoomComponent implements OnInit {
   userName: string = '';
   roomName: string = '';
   private that = this;
+  private subscriptions = new Subscription();
   constructor(private modalService: NgbModal,
     public appService: AppService,
     private apiService: ApiService,
@@ -26,8 +27,9 @@ export class RoomComponent implements OnInit {
     private hubnotificationService: HubNotificationService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.appService.appState$.subscribe(state => { this.userName = state.userName });
+   this.subscriptions.add(this.appService.appState$.subscribe(state => { this.userName = state.userName }));
   }
 
   private startConnection() {
@@ -40,8 +42,23 @@ export class RoomComponent implements OnInit {
       .catch(err => that.notificationService.notify("cannot start connection", "Error", InfoMessageType.Error));
   }
 
+  public ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
   public ngOnInit() {
     this.roomName = this.route.snapshot.params["name"];
+    if (!this.appService.current().userName) {
+      this.appService.openLogin().then(result => {
+        if (result)
+          this.startConnection();
+        else {
+          this.notificationService.notify("you should be registered to join room", "Need to register", InfoMessageType.Warning);
+          this.router.navigate(['/']);
+        }
+      }).catch(reason => console.log("error in open login" + reason));
+      return;
+    }
+
     this.startConnection();
   }
 }

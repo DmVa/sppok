@@ -50,6 +50,7 @@ namespace sppok.Hubs
         
         public async Task<string> RegisterConnectionId(string roomName)
         {
+            roomName = roomName?.ToLower();
             var userName = UserName();
             _roomService.AddUser(roomName, Context.ConnectionId, userName);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
@@ -59,6 +60,7 @@ namespace sppok.Hubs
 
         public async Task TopicChanged(string roomName, string topic)
         {
+            roomName = roomName?.ToLower();
             var room = _roomService.GetRoom(roomName);
             if (room != null)
                 room.Topic = topic;
@@ -67,6 +69,7 @@ namespace sppok.Hubs
 
         public async Task VoteStrated(string roomName)
         {
+            roomName = roomName?.ToLower();
             var room = _roomService.GetRoom(roomName);
             if (room != null)
             {
@@ -78,6 +81,7 @@ namespace sppok.Hubs
 
         public async Task VoteFinished(string roomName)
         {
+            roomName = roomName?.ToLower();
             var room = _roomService.GetRoom(roomName);
             if (room != null)
                 room.IsVoting = false;
@@ -86,6 +90,7 @@ namespace sppok.Hubs
         }
         public async Task Voted(string roomName, string vote)
         {
+            roomName = roomName?.ToLower();
             var room = _roomService.GetRoom(roomName);
             if (room != null)
                 room.SetVote(Context.ConnectionId, vote);

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription, SubscriptionLike } from 'rxjs';
 import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
@@ -14,9 +15,10 @@ import { SignalRService } from '../services/signalrService/signalr.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   userName: string = '';
   roomName: string = '';
+  private subscriptions = new Subscription();
   constructor(private modalService: NgbModal,
     public appService: AppService,
     private apiService: ApiService,
@@ -26,11 +28,14 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.appService.appState$.subscribe(state => { this.userName = state.userName });
+    this.subscriptions.add(this.appService.appState$.subscribe(state => { this.userName = state.userName }));
   }
 
   public ngOnInit() {
-   
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   joinroom() {

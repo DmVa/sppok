@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { ApiService } from '../services/apiService/api.service';
 
 import { AppService } from '../services/appService/app.service';
@@ -21,7 +22,7 @@ import { UserModel } from '../sharedModels/userModel';
     trigger('itemAddRemove', [
       transition(':enter', [
         style({ opacity: 0.2 }),
-        animate('2s ease-in', style({ opacity: 1 }))
+        animate('500ms ease-in', style({ opacity: 1 }))
       ]),
       transition(':leave', [
         animate('200ms ease-in', style({ transform: 'translateY(-100%)' }))
@@ -35,7 +36,7 @@ export class VotingComponent implements OnInit {
   private self = this;
   public state: RoomState = { isVoting: false, topic: '', users:[] }
   public yourVote: string = '';
-
+  private subscriptions = new Subscription();
   constructor(
     public appService: AppService,
     private apiService: ApiService,
@@ -46,28 +47,32 @@ export class VotingComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     let that = this;
-    this.signlalRService.connectionRegistered$.subscribe((connectionId) => that.onConnectionRegistered(connectionId));
-    this.signlalRService.voteStarted$.subscribe(value => {
+    this.subscriptions.add(this.signlalRService.connectionRegistered$.subscribe((connectionId) => that.onConnectionRegistered(connectionId)));
+    this.subscriptions.add(this.signlalRService.voteStarted$.subscribe(value => {
       that.state.isVoting = true;
       that.state.users.forEach(x => { x.vote = '' });
       that.yourVote = '';
       that.updateExplanation();
-    });
+    }));
 
-    this.signlalRService.voteFinished$.subscribe(value => {
+    this.subscriptions.add(this.signlalRService.voteFinished$.subscribe(value => {
       that.state.isVoting = false;
       that.updateExplanation();
-    });
+    }));
 
-    this.signlalRService.userJoined$.subscribe(value => { that.onUserJoined(value.userName, value.connectionId) })
-    this.signlalRService.userLeft$.subscribe(value => { that.onUserLeft(value.userName, value.connectionId) })
-    this.signlalRService.userVoted$.subscribe(value => { that.onUserVoted(value.vote, value.userName, value.connectionId) })
-    this.appService.appState$.subscribe(state => {  that.onAppStateChanged(state) });
+    this.subscriptions.add(this.signlalRService.userJoined$.subscribe(value => { that.onUserJoined(value.userName, value.connectionId) }));
+    this.subscriptions.add(this.signlalRService.userLeft$.subscribe(value => { that.onUserLeft(value.userName, value.connectionId) }));
+    this.subscriptions.add(this.signlalRService.userVoted$.subscribe(value => { that.onUserVoted(value.vote, value.userName, value.connectionId) }));
+    this.subscriptions.add(this.appService.appState$.subscribe(state => {  that.onAppStateChanged(state) }));
   }
    
 
   public ngOnInit() {
     this._roomName = this.route.snapshot.params["name"];
+  }
+
+  public ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   private onUserLeft(userName: string, connectionId: string) {
@@ -97,7 +102,7 @@ export class VotingComponent implements OnInit {
   }
 
   private onConnectionRegistered(connectionId: string) {
-    this.apiService.roomState$.subscribe(room => {
+    this.subscriptions.add(this.apiService.roomState$.subscribe(room => {
       this.state = room;
       let user = this.state.users.find(x => x.connectionId == this.appService.current().connectionId)
       if (user) {
@@ -106,7 +111,8 @@ export class VotingComponent implements OnInit {
       }
 
       this.updateExplanation();
-    });
+    })
+    );
 
     this.apiService.getState(this._roomName);
   }
