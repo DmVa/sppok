@@ -33,6 +33,7 @@ namespace sppok.Controllers
             var room = _roomService.GetRoom(roomName);
             if (room == null)
                 return new RoomState() { Users = new List<UserModel>() };
+            _logger.LogInformation($"got state for room {roomName}");
             return room;
         }
     }
