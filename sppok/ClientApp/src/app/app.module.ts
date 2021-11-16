@@ -45,8 +45,7 @@ export const httpInterceptorProviders = [
     RouterModule.forRoot([
       { path: 'room/:name', component: RoomComponent, pathMatch: 'prefix' },
       { path: 'room', component: HomeComponent, pathMatch: 'full' },
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: '**', redirectTo: '/' }
+      { path: '', component: HomeComponent, pathMatch: 'full' }
     ], { relativeLinkResolution: 'legacy' }),
     NgbModule,
     BrowserAnimationsModule,

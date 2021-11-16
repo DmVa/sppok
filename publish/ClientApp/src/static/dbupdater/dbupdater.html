@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Db Updater</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/static/dbupdater/dbupdater.css">
+</head>
+  <body>
+    <div>
+      Db Updater. Tool for detect file changes and update ms sql database from script files
+    </div>
+    <div>
+      Prerequisites: MS Sql Express for internal use, Windows 7/8/10/11.
+    </div>
+    <div>Usage scenario:</div>
+    <div class="item">
+      Run application.  Define server connection string.
+    </div>
+    <div>
+      <img src="/static/dbupdater/serversettings.png" />
+    </div>
+    <div class="item">
+      Define databases to update. At least one database should be defined.
+    </div>
+    <div>
+      <img src="/static/dbupdater/databases.png" />
+    </div>
+    <div class="item">
+      Define local folders which need to scan file changes.
+    </div>
+    <div>
+      <img src="/static/dbupdater/scripts.png" />
+    </div>
+    <div class="item">
+      Click scan changes, for first run system will recognize all files as new. Click 'All Register without
+    </div>
+    <div>
+      <img src="/static/dbupdater/initrun.png" />
+    </div>
+    <div class="item">
+      Change local files, like get new version from source control. Click scan changes, system will show changes files.</br>
+      Select changed file and click 'Run script from file'.
+    </div>
+    <div class="item">
+      <img src="/static/dbupdater/runscriptfromfile.png" />
+    </div>
+    <div class="item">
+      <a href="/static/dbupdater/dbupdater.zip" download>Download Archive</a>
+    </div>
+</html>

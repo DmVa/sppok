@@ -61,6 +61,15 @@
     <None Remove="ClientApp\src\assets\vote-numb.jpg" />
     <None Remove="ClientApp\src\assets\vote-numb.png" />
     <None Remove="ClientApp\src\assets\winky-smile.png" />
+    <None Remove="ClientApp\src\index.html" />
+    <None Remove="ClientApp\src\static\dbupdater\databases.png" />
+    <None Remove="ClientApp\src\static\dbupdater\dbupdater.css" />
+    <None Remove="ClientApp\src\static\dbupdater\dbupdater.html" />
+    <None Remove="ClientApp\src\static\dbupdater\dbupdater.zip" />
+    <None Remove="ClientApp\src\static\dbupdater\initrun.png" />
+    <None Remove="ClientApp\src\static\dbupdater\runscriptfromfile.png" />
+    <None Remove="ClientApp\src\static\dbupdater\scripts.png" />
+    <None Remove="ClientApp\src\static\dbupdater\serversettings.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -88,6 +97,31 @@
     <Content Include="ClientApp\src\assets\winky-smile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClientApp\src\index.html" />
+    <Content Include="ClientApp\src\static\dbupdater\databases.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\dbupdater.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\dbupdater.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\dbupdater.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\initrun.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\runscriptfromfile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\scripts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ClientApp\src\static\dbupdater\serversettings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -103,6 +137,9 @@
     </None>
     <None Update="ClientApp\src\app\sharedModels\userModel - Copy.js.map">
       <DependentUpon>userModel.js.map</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\static\dbupdater.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
